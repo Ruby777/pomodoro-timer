@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
-import * as firebase from firebase;
+import * as firebase from 'firebase';
 
 // Initialize Firebase
 var config = {
