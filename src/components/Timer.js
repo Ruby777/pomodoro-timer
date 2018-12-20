@@ -9,7 +9,8 @@ class Timer extends Component {
         this.state = {
             time: 0,
             play: false,
-            title:''
+            title:'',
+            onBreak: false
         }; /* this.state */
     }
 
@@ -31,26 +32,32 @@ class Timer extends Component {
 
     // Start and Stop the Work Session Timer
     playReset() {
-        if (this.state.play === false){
+        this.setState({ time : 1500000 });
+        this.setState({ play: true });
+        this.setState({ title: 'Reset Work Session'});
+        
+        this.interval = setInterval(() => {
+            this.setState(prevState => ({
+            time: prevState.time - 1
+            }));
+    
+        if (this.state.time === 1470000) {this.break();
+         } 
+        });
+    }
 
-            this.setState({ time : 1500000 });
-            this.setState({ play: true });
-            this.setState({title: 'Reset'});
-            this.interval = setInterval(() => {
-                this.setState(prevState => ({
-                time: prevState.time - 1
-              }));
-      
-                if (this.state.time === 0) {this.reset();}
-            });
+    resetWorkSession(){
+        clearInterval(this.interval);
+        this.setState({ time: 0});
+        this.setState({ title: 'Start a new work Session'});
+        this.setState({ play: false });
+    }
 
-        } else {
-            if (this.state.play === true ){
-                clearInterval(this.interval);
-                this.setDefaultTime();
-                this.setState({ play: false });
-                this.setState({title: 'Start a Work Session'});
-            }
+    resetBreak(){
+        if(this.state.play === true && this.state.title === 'Reset Break Session'){
+            clearInterval(this.interval);
+            this.setDefaultTime();
+            this.setState({title: 'Start a Work Session'});
         }
     }
 
@@ -59,33 +66,35 @@ class Timer extends Component {
         if (this.state.play === true ){
             clearInterval(this.interval);
             this.setDefaultTime();
-            this.setState({ play: false });
-        }
+            this.setState({title: 'Start a Work Session'});
+         }
     }
 
-    /*
+    // 5 minute break
     break() {    
-        if (this.state.play === false){
+       // if (this.state.play === false){
 
             this.setState({ time : 300000 });
-      
             this.setState({ play: true });
+            this.setState({title: 'Reset Break Session'});
             this.interval = setInterval(() => {
                 this.setState(prevState => ({
-                time: prevState.time - 1
+                time: prevState.time - 1       
               }));
-      
-                if (this.state.time === 0) {this.reset();}
+              if (this.state.time === 270000) {
+                  this.playReset();
+                }
             });
 
-        } else {
-            if (this.state.play === true ){
-                clearInterval(this.interval);
-                this.setDefaultTime();
-                this.setState({ play: false });
-            }
-        }
-    } */
+        //} else {
+           // if (this.state.play === true ){
+                //clearInterval(this.interval);
+                //this.setDefaultTime();
+                //this.setState({ play: false });
+                //this.setState({title: 'Start a Break'});
+            //}
+        //}
+    } 
 
     // Setting Defaults
     setDefaultTime() {
