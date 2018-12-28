@@ -33,9 +33,12 @@ class Timer extends Component {
     playReset() {
         if (this.state.play === false){
 
-            this.setState({ time : 1500000 });
-            this.setState({ play: true });
-            this.setState({title: 'Reset'});
+            this.setState({ 
+                time : 1500000,
+                play: true,
+                title: 'Reset'
+            });
+        
             this.interval = setInterval(() => {
                 this.setState(prevState => ({
                 time: prevState.time - 1
@@ -45,12 +48,10 @@ class Timer extends Component {
             });
 
         } else {
-            if (this.state.play === true ){
-                clearInterval(this.interval);
-                this.setDefaultTime();
-                this.setState({ play: false });
-                this.setState({title: 'Start a Work Session'});
-            }
+            clearInterval(this.interval);
+            this.setDefaultTime();
+            this.setState({ play: false });
+            this.setState({title: 'Start a Work Session'});
         }
     }
 
