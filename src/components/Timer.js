@@ -9,9 +9,9 @@ class Timer extends Component {
         this.state = {
             time: 0,
             play: false,
-            title:'',
-            onBreak: false
+            title:''
         }; /* this.state */
+        this.interval = null;
     }
 
     componentDidMount(){
@@ -30,72 +30,72 @@ class Timer extends Component {
         return minutes + ':' + seconds;
     }
 
-    // Start and Stop the Work Session Timer
-    playReset() {
-        this.setState({ time : 1500000 });
-        this.setState({ play: true });
-        this.setState({ title: 'Reset Work Session'});
-        
-        this.interval = setInterval(() => {
-            this.setState(prevState => ({
-            time: prevState.time - 1
-            }));
+    // A function to handle button onClick 
+    handleToggleClick(){
+        if (this.state.title === 'Start Work Session'){
+            return this.workStart();
+        } 
+        if (this.state.title === 'Reset Work Session'){
+            return this.resetWorkSession();
+        } 
+    }
+
     
-        if (this.state.time === 1470000) {this.break();
-         } 
+    // Start and Stop the Work Session Timer
+    workStart() {
+      
+        this.setState({ 
+            time : 1500000,
+            play: true,
+            title: 'Reset Work Session'
+        });
+            this.interval = setInterval(() => {
+            this.setState(prevState => ({
+                time: prevState.time - 1
+            }));
+        
+            if (this.state.time === 0) {
+                this.break();
+            } 
         });
     }
 
-    resetWorkSession(){
-        clearInterval(this.interval);
-        this.setState({ time: 0});
-        this.setState({ title: 'Start a new work Session'});
-        this.setState({ play: false });
-    }
-
-    resetBreak(){
-        if(this.state.play === true && this.state.title === 'Reset Break Session'){
-            clearInterval(this.interval);
-            this.setDefaultTime();
-            this.setState({title: 'Start a Work Session'});
-        }
-    }
-
-    //Reset Function
-    reset(){
-        if (this.state.play === true ){
-            clearInterval(this.interval);
-            this.setDefaultTime();
-            this.setState({title: 'Start a Work Session'});
-         }
-    }
-
-    // 5 minute break
+    // Five minute break
     break() {    
-       // if (this.state.play === false){
 
-            this.setState({ time : 300000 });
-            this.setState({ play: true });
-            this.setState({title: 'Reset Break Session'});
-            this.interval = setInterval(() => {
-                this.setState(prevState => ({
-                time: prevState.time - 1       
-              }));
-              if (this.state.time === 270000) {
-                  this.playReset();
-                }
-            });
+        this.setState({ 
+            time : 300000,
+            play: true,
+            title: 'Start Work Session'
+        });
+        this.interval = setInterval(() => {
+            this.setState(prevState => ({
+            time: prevState.time - 1       
+            }));
 
-        //} else {
-           // if (this.state.play === true ){
-                //clearInterval(this.interval);
-                //this.setDefaultTime();
-                //this.setState({ play: false });
-                //this.setState({title: 'Start a Break'});
-            //}
-        //}
+            if (this.state.time === 0) {
+                this.workStart();
+            } 
+        });
     } 
 
+    resetWorkSession(){
+        clearInterval(this.interval);
+        this.setState({ 
+            time : 1500000,
+            title: 'Start Work Session',
+            play: false
+        });
+    }
+
+    /*//Reset Function
+    reset(){
+        clearInterval(this.interval);
+        this.setDefaultTime();
+        this.setState({title: 'Start Work Session'});
+    }*/
+
+    
     // Setting Defaults
     setDefaultTime() {
         let defaultTime = 0;
@@ -103,17 +103,15 @@ class Timer extends Component {
         this.setState({
             time: defaultTime,
             play: false,
-            title: 'Start a Work Session' 
+            title: 'Start Work Session' 
         });
     }
-
-
+    
     render(){
         return(
             <div> 
                 <span className="time">{this.format(this.state.time)}</span> <br/>
-                <button className="start" onClick={() =>this.playReset()}>{this.state.title}</button>
-                <button className="break" onClick={() =>this.break()}>Take a Break</button>
+                <button className="start" onClick={() =>this.handleToggleClick()}>{this.state.title}</button>  
             </div>
         );
     }
