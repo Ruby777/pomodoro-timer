@@ -53,7 +53,7 @@ class Timer extends Component {
         }
     }
     
-    // Start and Stop the Work Session Timer
+    // Work Session Timer
     workStart() {
 
         this.setState({ 
@@ -61,7 +61,7 @@ class Timer extends Component {
             play: true,
             title: 'Reset Work Session'
         });
-            this.interval = setInterval(() => {
+        this.interval = setInterval(() => {
             this.setState(prevState => ({
                 time: prevState.time - 1
             }));
