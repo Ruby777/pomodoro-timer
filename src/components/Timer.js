@@ -49,7 +49,7 @@ class Timer extends Component {
             });
             this.longBreak();
         } else { 
-            this.break();
+            this.shortBreak();
         }
     }
     
