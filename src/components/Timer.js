@@ -9,7 +9,8 @@ class Timer extends Component {
         this.state = {
             time: 0,
             play: false,
-            title:''
+            title:'',
+            sessionsCount: 0
         }; /* this.state */
         this.interval = null;
     }
@@ -40,10 +41,21 @@ class Timer extends Component {
         } 
     }
 
+    //function to handle work sessions
+    handleSessions(){
+        if (this.state.sessionsCount === 4){
+            this.setState({
+                sessionsCount: 0
+            });
+            this.longBreak();
+        } else { 
+            this.break();
+        }
+    }
     
     // Start and Stop the Work Session Timer
     workStart() {
-      
+
         this.setState({ 
             time : 1500000,
             play: true,
@@ -55,19 +67,24 @@ class Timer extends Component {
             }));
         
             if (this.state.time === 0) {
-                this.break();
+                this.setState(prevState =>{
+                    return{sessionsCount: prevState.sessionsCount + 1}
+                }); 
+                
+                this.handleSessions();
             } 
         });
     }
 
     // Five minute break
-    break() {    
-
+    break() { 
+        
         this.setState({ 
             time : 300000,
             play: true,
             title: 'Start Work Session'
         });
+
         this.interval = setInterval(() => {
             this.setState(prevState => ({
             time: prevState.time - 1       
@@ -77,7 +94,25 @@ class Timer extends Component {
                 this.workStart();
             } 
         });
-    } 
+    }
+
+    longBreak(){
+       
+        this.setState({ 
+            time: 1800000,
+            play: true,
+            title: 'Start Work Session'
+        });
+        this.interval = setInterval(() => {
+            this.setState(prevState => ({
+                time: prevState.time - 1
+            }));
+
+            if (this.state.time === 0) {
+                this.workStart();
+            }
+        });
+    }
 
     resetWorkSession(){
         clearInterval(this.interval);
@@ -88,6 +123,7 @@ class Timer extends Component {
         });
     }
 
+   
     /*//Reset Function
     reset(){
         clearInterval(this.interval);
@@ -103,7 +139,8 @@ class Timer extends Component {
         this.setState({
             time: defaultTime,
             play: false,
-            title: 'Start Work Session' 
+            title: 'Start Work Session',
+            sessionsCount: 0
         });
     }
     
