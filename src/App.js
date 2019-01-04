@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import './App.css';
-import * as firebase from 'firebase/app';
-import Timer from './components/Timer.js'
+import * as firebase from 'firebase';
+import Timer from './components/Timer.js';
+import TaskHistory from './components/TaskHistory.js';
 
 // Initialize Firebase
 var config = {
@@ -16,16 +17,35 @@ var config = {
 firebase.initializeApp(config);
 
 class App extends Component {
+
+  constructor(props){
+    super(props)
+
+    this.state = {
+      activeTask:null
+    };
+  }
+
+  setActiveTask(task){
+    this.setState({ activeTask: task });
+  }
+
+
+
   render() {
     return (
-      <div className="App">
+      <section className="App">
         <header className="App-header">
           <p> MY POMODORO TIMER </p>
         </header>
-
-        <Timer />
-
-      </div>
+        <div>
+          <Timer />
+        </div>
+        <div>
+          <TaskHistory
+            firebase = {firebase} />
+        </div>
+      </section>
     );
   }
 }

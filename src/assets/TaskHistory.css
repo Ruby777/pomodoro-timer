@@ -1,0 +1,11 @@
+body{
+    color: #333;
+}
+
+.taskList{
+    background-color: lightgrey;
+}
+.newTask{
+    font-size:4vh;
+    font-weight:bold;
+}
