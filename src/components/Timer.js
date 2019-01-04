@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import './../assets/Timer.css'
+import './../assets/Timer.css';
+import alarm from './../assets/analog-watch-alarm_daniel-simion.wav';
 
 class Timer extends Component {
 
@@ -19,6 +20,7 @@ class Timer extends Component {
         this.setDefaultTime();
     }
 
+
    // Formating Milliseconds to seconds and minutes
    format(timeInMilliseconds){
         var timeInSeconds = Math.floor(timeInMilliseconds / 1000);
@@ -30,6 +32,7 @@ class Timer extends Component {
 
         return minutes + ':' + seconds;
     }
+
 
     // A function to handle button onClick 
     handleToggleClick(){
@@ -44,9 +47,11 @@ class Timer extends Component {
     //function to handle work sessions
     handleSessions(){
         if (this.state.sessionsCount === 4){
+            
             this.setState({
                 sessionsCount: 0
             });
+            
             this.longBreak();
         } else { 
             this.shortBreak();
@@ -61,18 +66,19 @@ class Timer extends Component {
             play: true,
             title: 'Reset Work Session'
         });
+       
         this.interval = setInterval(() => {
             this.setState(prevState => ({
-                time: prevState.time - 1
+               time: prevState.time - 1
             }));
-        
+
             if (this.state.time === 0) {
+                this.playSound();
                 this.setState(prevState =>{
                     return{sessionsCount: prevState.sessionsCount + 1}
                 }); 
-                
                 this.handleSessions();
-            } 
+            }
         });
     }
 
@@ -91,6 +97,7 @@ class Timer extends Component {
             }));
 
             if (this.state.time === 0) {
+                this.playSound();
                 this.workStart();
             } 
         });
@@ -110,6 +117,7 @@ class Timer extends Component {
             }));
 
             if (this.state.time === 0) {
+                this.playSound();
                 this.workStart();
             }
         });
@@ -124,15 +132,13 @@ class Timer extends Component {
         });
     }
 
+   //audio
+   playSound(){
+        this.audio.play();
+        setTimeout(() => this.audio.pause(), 2000);
+    }
    
-    /*//Reset Function
-    reset(){
-        clearInterval(this.interval);
-        this.setDefaultTime();
-        this.setState({title: 'Start Work Session'});
-    }*/
 
-    
     // Setting Defaults
     setDefaultTime() {
         let defaultTime = 0;
@@ -148,6 +154,7 @@ class Timer extends Component {
     render(){
         return(
             <div> 
+                <audio ref={(a) => this.audio = a} src={alarm}/>
                 <span className="time">{this.format(this.state.time)}</span> <br/>
                 <button className="start" onClick={() =>this.handleToggleClick()}>{this.state.title}</button>
             </div>
