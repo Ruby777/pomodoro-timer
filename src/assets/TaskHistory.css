@@ -7,18 +7,18 @@ body{
     background-color: lightgrey;
 }
 .newTask{
-    font-size:4vh;
-    font-weight:bold;
+    font-size: 27px;
+    font-weight: bold;
 }
 .taskInput{
-    height: 5vh;
-    width: 30vw;
+    height: 30px;
+    width: 270px;
     border-radius: 5px;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
 }
 .taskBtn{
-    height:5vh;
-    width: 12vw;
+    height:35px;
+    width: 100px;
     border-radius: 5px;
 }
