@@ -1,5 +1,6 @@
 body{
     color: #333;
+    text-align: center;
 }
 
 .taskList{
@@ -8,4 +9,16 @@ body{
 .newTask{
     font-size:4vh;
     font-weight:bold;
+}
+.taskInput{
+    height: 5vh;
+    width: 30vw;
+    border-radius: 5px;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+.taskBtn{
+    height:5vh;
+    width: 12vw;
+    border-radius: 5px;
 }

@@ -35,8 +35,11 @@ class TaskHistory extends Component {
   render(){
       const template = this.state.tasks.map((task, i) => {
           return(
-              <li key={task.key} onClick = {() => {this.props.setActiveTask(task)}}>{task.name}</li>
-          )
+              <span key={task.key} 
+               onClick = {() => {this.props.setActiveTask(task)}}>{task.name}
+               <hr/>
+               </span>
+            )
       });
 
       return (
@@ -44,16 +47,16 @@ class TaskHistory extends Component {
                 
                 <form className="createTask" onSubmit={(e) => {e.preventDefault(); this.createTask()}}>
                     <input
-                        className="roomInput"
+                        className="taskInput"
                         type="text"
                         placeholder="New Task"
                         value={this.state.taskName}
                         onChange={(e) => this.handleNewTaskName(e)}
                     />
-                    <button>Add Task</button>
+                    <button className="taskBtn">Add Task</button>
                 </form>    
                 <p className="newTask">Task History</p>
-                <ul>{template}</ul>      
+                <ul>{template.reverse()}</ul>      
             </div>
        );
     }
